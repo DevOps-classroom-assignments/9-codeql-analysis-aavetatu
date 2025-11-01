@@ -48,9 +48,14 @@ jobs:
 
     # Define steps to build and run the Docker container
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v4
       - name: Build container
         run: docker build -t go-web-server .
       - name: Run container
-        run: docker run -p 8080:8080 go-web-server
+        run: |
+          docker run --rm -d -p 8080:8080 --name test-container go-web-server
+          sleep 5
+          docker logs test-container
+          docker stop test-container
+        
 
